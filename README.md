@@ -1,6 +1,9 @@
 # WisBlock RAK11200 - RAK13300 SMA Sunnyboy to IoT    
-| ![RAKstar](./assets/rakstar.jpg) | ![WisBlock](./assets/RAK-Whirls.png) |
-| :-: | :-: |
+
+| <center><img src="./assets/rakstar.jpg" alt="RAKstar" width=50%></center>  | <center><img src="./assets/RAK-Whirls.png" alt="RAKWireless" width=50%></center> | <center><img src="./assets/WisBlock.png" alt="WisBlock" width=50%></center> | <center><img src="./assets/Yin_yang-48x48.png" alt="BeeGee" width=50%></center>  |
+| -- | -- | -- | -- |
+
+----
 
 As my solar panels were installed by [PHilERGY](https://www.philergy.com/), the engineers explained to me how to connect the SMA SunnyBoy inverter to my local WiFi network. This enables the inverter to send its production data and status over the internet to SMA's servers.    
 Of course this is very comfortable, but for me as an IoT engineer, I wanted to have direct access to the inverter and collect the data by myself. Luckily, SMA has included a web interface in the Sunnyboy and released an API to request data from the inverter directly.
