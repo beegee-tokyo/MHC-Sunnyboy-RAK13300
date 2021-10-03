@@ -12,6 +12,8 @@ I choose UDP broadcasting in my local network, because it enables me to receive 
 
 The result of this project can be seen in my public Datacake Dashboard [Around my House](https://app.datacake.de/dashboard/d/b6acccc0-2264-42d4-aec9-94148d7eb76f) in the Solar Panel chart.    
 
+![Datacake](./assets/Datacake.png)    
+
 _**REMARK**_
 This project is made with PlatformIO!
 
@@ -75,6 +77,6 @@ The plan is to implement the setup of the SMA Sunnyboy IP address and password o
 
 # Special thanks
 
-Special thanks to @h2zero for his outstanding work on the NimBLE library for the ESP32, that uses only a fraction of memory compared with the BLE library coming with ESP32 Arduino BSP.
+Special thanks to @h2zero for his outstanding work on the [NimBLE-Arduino](https://github.com/h2zero/NimBLE-Arduino) for the ESP32, that uses only a fraction of memory compared with the BLE library coming with ESP32 Arduino BSP.
 
-Special thanks to @pkoerber for his SMA Sunnyboy library that made it so simple to communicate with the SMA Sunnyboy Inverters.
+Special thanks to @pkoerber for his [SMA SunnyBoy Reader](https://github.com/pkoerber/SMA-SunnyBoy-Reader) that made it so simple to communicate with the SMA Sunnyboy Inverters.
