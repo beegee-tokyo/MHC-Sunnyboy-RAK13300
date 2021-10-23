@@ -127,6 +127,14 @@ void stop_ble_adv(void);
 extern bool g_ble_uart_is_connected;
 extern BLECharacteristic *uart_tx_characteristic;
 
+#define BLE_PRINTF(...)                                                 \
+	if (g_ble_uart_is_connected)                                        \
+	{                                                                   \
+		char buff[255];                                                 \
+		int len = sprintf(buff, __VA_ARGS__);                           \
+		uart_tx_characteristic->setValue((uint8_t *)buff, (size_t)len); \
+		uart_tx_characteristic->notify(true);   \
+	}
 
 // Preferences stuff
 void get_lora_prefs(void);
@@ -151,3 +159,15 @@ uint8_t get_lora_batt(void);
 // AT Command stuff
 void at_serial_input(uint8_t cmd);
 void start_check_serial(void);
+
+// Display stuff
+#include <SSD1306Wire.h>
+void init_display(void);
+void write_display(int power, int collected);
+
+// Solar Panel stuff
+union value_s
+{
+	uint16_t val_16 = 0;
+	uint8_t val_8[2];
+};

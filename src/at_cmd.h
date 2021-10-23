@@ -20,11 +20,4 @@
 		BLE_PRINTF(__VA_ARGS__); \
 	}
 
-#define BLE_PRINTF(...)                                                 \
-	if (g_ble_uart_is_connected)                                        \
-	{                                                                   \
-		char buff[255];                                                 \
-		int len = sprintf(buff, __VA_ARGS__);                           \
-		uart_tx_characteristic->setValue((uint8_t *)buff, (size_t)len); \
-	}
 #endif
