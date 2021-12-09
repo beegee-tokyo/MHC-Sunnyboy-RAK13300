@@ -32,7 +32,10 @@ void initOTA()
 					   {
 						   String debugMsg = "OTA start";
 						   Serial.println(debugMsg);
+						   BLE_PRINTF("OTA start");
 						   g_ota_running = true;
+						   udp.close();
+						//    ~AsyncUDP();
 						   digitalWrite(LED_BLUE, HIGH); // Turn on blue LED
 						   digitalWrite(LED_GREEN, LOW); // Turn on green LED
 					   });
@@ -40,16 +43,19 @@ void initOTA()
 						  {
 							  digitalWrite(LED_BLUE, !digitalRead(LED_BLUE));	// Toggle blue LED
 							  digitalWrite(LED_GREEN, !digitalRead(LED_GREEN)); // Toggle green LED
+							  BLE_PRINTF("Progress: %u%%\r", (progress / (total / 100)));
 						  });
 	ArduinoOTA.onError([](ota_error_t error)
 					   {
 						   digitalWrite(LED_BLUE, HIGH);  // Turn on blue LED
 						   digitalWrite(LED_GREEN, HIGH); // Turn on green LED
+						   BLE_PRINTF("Error: %d\r", error);
 					   });
 	ArduinoOTA.onEnd([]()
 					 {
 						 digitalWrite(LED_BLUE, LOW);	// Turn off blue LED
 						 digitalWrite(LED_GREEN, HIGH); // Turn off green LED
+						 BLE_PRINTF("Finished\r");
 					 });
 
 	// Start OTA server.

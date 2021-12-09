@@ -96,12 +96,14 @@ extern bool g_lpwan_has_joined;
 extern bool g_lorawan_initialized;
 extern int16_t g_last_rssi;
 extern int8_t g_last_snr;
+extern uint32_t otaaDevAddr;
 
 void initOTA();
 extern bool g_ota_running;
 
 void init_wifi(void);
 void get_wifi_prefs(void);
+void saveSmaIP(void);
 extern bool g_has_credentials;
 extern bool g_conn_status_changed;
 extern volatile bool g_wifi_connected;
@@ -111,6 +113,8 @@ extern String g_ssid_prim;
 extern String g_ssid_sec;
 extern String g_pw_prim;
 extern String g_pw_sec;
+extern IPAddress inverterIP;
+extern AsyncUDP udp;
 
 // Includes for BLE
 #include <NimBLEUtils.h>
@@ -133,7 +137,7 @@ extern BLECharacteristic *uart_tx_characteristic;
 		char buff[255];                                                 \
 		int len = sprintf(buff, __VA_ARGS__);                           \
 		uart_tx_characteristic->setValue((uint8_t *)buff, (size_t)len); \
-		uart_tx_characteristic->notify(true);   \
+		uart_tx_characteristic->notify(true);                           \
 	}
 
 // Preferences stuff

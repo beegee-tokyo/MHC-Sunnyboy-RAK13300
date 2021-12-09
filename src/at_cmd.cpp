@@ -360,7 +360,14 @@ static int at_exec_appkey(char *str)
  */
 static int at_query_devaddr(void)
 {
-	snprintf(g_at_query_buf, ATQUERY_SIZE, "%08X\n", g_lorawan_settings.node_dev_addr);
+	if (otaaDevAddr != 0)
+	{
+		snprintf(g_at_query_buf, ATQUERY_SIZE, "%08X\n", otaaDevAddr);
+	}
+	else
+	{
+		snprintf(g_at_query_buf, ATQUERY_SIZE, "%08X\n", g_lorawan_settings.node_dev_addr);
+	}
 	return 0;
 }
 
@@ -552,7 +559,7 @@ static int at_exec_join(char *str)
 	uint8_t nbtrials;
 	char *param;
 
-	param = strtok(str, ",");
+	param = strtok(str, ":");
 
 	/* check start or stop join parameter */
 	bJoin = strtol(param, NULL, 0);
@@ -562,7 +569,7 @@ static int at_exec_join(char *str)
 	}
 
 	/* check auto join parameter */
-	param = strtok(NULL, ",");
+	param = strtok(NULL, ":");
 	if (param != NULL)
 	{
 		autoJoin = strtol(param, NULL, 0);
@@ -572,7 +579,7 @@ static int at_exec_join(char *str)
 		}
 		g_lorawan_settings.auto_join = (autoJoin == 1 ? true : false);
 
-		param = strtok(NULL, ",");
+		param = strtok(NULL, ":");
 		if (param != NULL)
 		{
 			// join interval, not support yet.
@@ -873,6 +880,65 @@ static int at_exec_restore(void)
 	return 0;
 }
 
+static int at_exec_sma(char * str)
+{
+	char * param;
+	IPAddress newIP(0, 0, 0, 0);
+	uint8_t partIP = 0;
+
+	Serial.println(str);
+	
+	param = strtok(str, ":");
+	if (param != NULL)
+	{
+		partIP = strtol(param, NULL, 0);
+		if (partIP < 255)
+		{
+			newIP[0] = partIP;
+			param = strtok(NULL, ":");
+			if (param != NULL)
+			{
+				partIP = strtol(param, NULL, 0);
+				if (partIP < 255)
+				{
+					newIP[1] = partIP;
+					param = strtok(NULL, ":");
+					if (param != NULL)
+					{
+						partIP = strtol(param, NULL, 0);
+						if (partIP < 255)
+						{
+							newIP[2] = partIP;
+							param = strtok(NULL, ":");
+							if (param != NULL)
+							{
+								partIP = strtol(param, NULL, 0);
+								if (partIP < 255)
+								{
+									newIP[3] = partIP;
+									inverterIP[0] = newIP[0];
+									inverterIP[1] = newIP[1];
+									inverterIP[2] = newIP[2];
+									inverterIP[3] = newIP[3];
+									saveSmaIP();
+									return 0;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return AT_ERRNO_PARA_VAL;
+}
+
+static int at_query_sma(void)
+{
+	snprintf(g_at_query_buf, ATQUERY_SIZE, "%d:%d:%d:%d", inverterIP[0], inverterIP[1], inverterIP[2], inverterIP[3]);
+	return 0;
+}
+
 static int at_exec_list_all(void);
 
 /**
@@ -910,6 +976,9 @@ static atcmd_t g_at_cmd_list[] = {
 	{"+RSSI", "Last RX packet RSSI", at_query_rssi, NULL, NULL},
 	{"+SNR", "Last RX packet SNR", at_query_snr, NULL, NULL},
 	{"+VER", "Get SW version", at_query_version, NULL, NULL},
+	// SMA inverter IP address setup
+	{"+SMA", "Get and Set SMA inverter IP address", at_query_sma, at_exec_sma, NULL},
+
 };
 
 /**

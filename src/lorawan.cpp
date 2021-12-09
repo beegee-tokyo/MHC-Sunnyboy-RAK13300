@@ -36,6 +36,9 @@ bool g_join_result = false;
 /** Status of LoRaWAN join **/
 bool g_lpwan_has_joined = false;
 
+/** OTAA device address */
+uint32_t otaaDevAddr = 0;
+
 /**************************************************************/
 /* LoRaWAN properties                                            */
 /**************************************************************/
@@ -99,7 +102,7 @@ int8_t init_lorawan(void)
 
 	// Get saved preferences
 	get_lora_prefs();
-	
+
 	// Initialize LoRa chip.
 	if (lora_rak13300_init() != 0)
 	{
@@ -189,8 +192,9 @@ static void lpwan_joined_handler(void)
 
 	if (g_lorawan_settings.otaa_enabled)
 	{
-		uint32_t otaaDevAddr = lmh_getDevAddr();
+		otaaDevAddr = lmh_getDevAddr();
 		myLog_d("OTAA joined and got dev address %08lX", otaaDevAddr);
+		BLE_PRINTF("OTAA joined and got dev address %08lX", otaaDevAddr);
 	}
 	else
 	{

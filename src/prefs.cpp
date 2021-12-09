@@ -377,6 +377,23 @@ void get_wifi_prefs(void)
 					g_ssid_sec.c_str(), g_pw_sec.c_str());
 			g_has_credentials = true;
 		}
+
+		IPAddress newIP(0, 0, 0, 0);
+		uint8_t partIP = 0;
+
+		newIP[0] = preferences.getShort("sma_0", 0);
+		newIP[1] = preferences.getShort("sma_1", 0);
+		newIP[2] = preferences.getShort("sma_2", 0);
+		newIP[3] = preferences.getShort("sma_3", 0);
+
+		if ((newIP[0] == 0) && (newIP[1] == 0) && (newIP[2] == 0) && (newIP[3] == 0))
+		{
+			myLog_d("No valid SMA IP found, use default");
+		}
+		else
+		{
+			inverterIP = newIP;
+		}
 	}
 	else
 	{
@@ -403,4 +420,15 @@ void get_wifi_prefs(void)
 	// 	preferences.end();
 	// 	g_has_credentials = true;
 	// }
+}
+
+void saveSmaIP(void)
+{
+	Preferences preferences;
+	preferences.begin("WiFiCred", false);
+	preferences.putShort("sma_0", inverterIP[0]);
+	preferences.putShort("sma_1", inverterIP[1]);
+	preferences.putShort("sma_2", inverterIP[2]);
+	preferences.putShort("sma_3", inverterIP[3]);
+	preferences.end();
 }

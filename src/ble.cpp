@@ -114,6 +114,7 @@ class WiFiCallBackHandler : public BLECharacteristicCallbacks
 				key_index = 0;
 		}
 
+		myLog_d("Received data:");
 		for (int idx = 0; idx < rx_value.length(); idx++)
 		{
 			Serial.printf("%c", rx_value[idx]);
@@ -124,19 +125,15 @@ class WiFiCallBackHandler : public BLECharacteristicCallbacks
 		auto json_error = deserializeJson(json_buffer, (char *)&rx_value[0]);
 		if (json_error == 0)
 		{
-			if ((json_buffer.containsKey("g_ssid_prim") &&
-				 json_buffer.containsKey("g_pw_prim") &&
-				 json_buffer.containsKey("g_ssid_sec") &&
-				 json_buffer.containsKey("g_pw_sec")) ||
-				(json_buffer.containsKey("g_ssid_prim") &&
-				 json_buffer.containsKey("g_pw_prim") &&
-				 json_buffer.containsKey("g_ssid_sec") &&
-				 json_buffer.containsKey("g_pw_sec")))
+			if (json_buffer.containsKey("ssidPrim") &&
+				 json_buffer.containsKey("pwPrim") &&
+				 json_buffer.containsKey("ssidSec") &&
+				 json_buffer.containsKey("pwSec"))
 			{
-				g_ssid_prim = json_buffer["g_ssid_prim"].as<String>();
-				g_pw_prim = json_buffer["g_pw_prim"].as<String>();
-				g_ssid_sec = json_buffer["g_ssid_sec"].as<String>();
-				g_pw_sec = json_buffer["g_pw_sec"].as<String>();
+				g_ssid_prim = json_buffer["ssidPrim"].as<String>();
+				g_pw_prim = json_buffer["pwPrim"].as<String>();
+				g_ssid_sec = json_buffer["ssidSec"].as<String>();
+				g_pw_sec = json_buffer["pwSec"].as<String>();
 
 				Preferences preferences;
 				preferences.begin("WiFiCred", false);
@@ -187,6 +184,10 @@ class WiFiCallBackHandler : public BLECharacteristicCallbacks
 			{
 				WiFi.disconnect();
 				esp_restart();
+			}
+			else
+			{
+				myLog_e("No valid dataset");
 			}
 		}
 		else
@@ -334,6 +335,11 @@ class UartCallBackHandler : public BLECharacteristicCallbacks
 		if (rx_value.length() > 0)
 		{
 			myLog_d("Received Value: %s", rx_value);
+			for (int idx = 0; idx < rx_value.length(); idx++)
+			{
+				at_serial_input(rx_value[idx]);
+			}
+			at_serial_input('\r');
 		}
 	}
 };
@@ -426,7 +432,6 @@ void stop_ble_adv(void)
  */
 void start_ble_adv(void)
 {
-	ble_advertising->start();
+	ble_advertising->start(0);
 	g_ble_is_on = true;
 }
-
