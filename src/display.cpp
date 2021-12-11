@@ -66,7 +66,7 @@ void write_display(int power, int collected)
 		break;
 	}
 	oled_disp.setFont(Monospaced_bold_10);
-	snprintf(disp_line, sizeof(disp_line), "SMA Sunnyboy");
+	snprintf(disp_line, sizeof(disp_line), "SMA Sunnyboy %s", isSuccess ? "O" : "X");
 	oled_disp.drawString(x_pos, 0, disp_line);
 
 	oled_disp.setFont(Monospaced_bold_15);

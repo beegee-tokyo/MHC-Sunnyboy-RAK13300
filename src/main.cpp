@@ -25,6 +25,8 @@ char g_sw_version[10];
 /** WiFiUDP class for creating UDP communication */
 WiFiUDP udpClientServer;
 
+bool isSuccess = false;
+
 /**
  * @brief Arduino setup
  * 
@@ -85,8 +87,8 @@ void loop()
 		// Get Power and Today's Energy values from Sunnyboy
 
 		String keys[2] = {KEY_POWER, KEY_ENERGY_TODAY};
-		int values[2];
-		bool isSuccess = false;
+		int values[2] = {0,0};
+		isSuccess = false;
 		int retry_count = 0;
 		while (!isSuccess)
 		{
@@ -187,6 +189,11 @@ void loop()
 					delay(100);
 				}
 			}
+		}
+
+		if (!isSuccess)
+		{
+			write_display(values[0], values[1]);
 		}
 
 		digitalWrite(LED_GREEN, LOW);

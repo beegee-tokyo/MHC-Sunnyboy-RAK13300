@@ -168,6 +168,7 @@ void start_check_serial(void);
 #include <SSD1306Wire.h>
 void init_display(void);
 void write_display(int power, int collected);
+extern bool isSuccess;
 
 // Solar Panel stuff
 union value_s
