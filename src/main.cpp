@@ -5,7 +5,7 @@
 #include "main.h"
 
 /** Address of SMA Sunnyboy Inverter */
-IPAddress inverterIP(192, 168, 1, 82);
+IPAddress inverterIP(192, 168, 1, 127);
 
 /** Async UDP */
 AsyncUDP udp;
@@ -29,7 +29,7 @@ bool isSuccess = false;
 
 /**
  * @brief Arduino setup
- * 
+ *
  */
 void setup()
 {
@@ -63,7 +63,7 @@ void setup()
 
 /**
  * @brief Arduino loop
- * 
+ *
  */
 void loop()
 {
@@ -87,11 +87,13 @@ void loop()
 		// Get Power and Today's Energy values from Sunnyboy
 
 		String keys[2] = {KEY_POWER, KEY_ENERGY_TODAY};
-		int values[2] = {0,0};
+		int values[2] = {0, 0};
 		isSuccess = false;
 		int retry_count = 0;
 		while (!isSuccess)
 		{
+			myLog_d("Heap: %ld", ESP.getFreeHeap());
+			myLog_d("Stack: %ld", uxTaskGetStackHighWaterMark(NULL));
 			isSuccess = smaReader.getValues(2, keys, values);
 			myLog_d("Getting values: %s", isSuccess ? "success" : "fail");
 			BLE_PRINTF("Getting values: %s", isSuccess ? "success" : "fail");
@@ -189,6 +191,12 @@ void loop()
 					delay(100);
 				}
 			}
+			// Handle OTA updates
+			ArduinoOTA.handle();
+			if (g_ota_running)
+			{
+				return;
+			}
 		}
 
 		if (!isSuccess)
@@ -203,10 +211,10 @@ void loop()
 		{
 			// Handle OTA updates
 			ArduinoOTA.handle();
-			// if (g_ota_running)
-			// {
-			// 	return;
-			// }
+			if (g_ota_running)
+			{
+				return;
+			}
 			delay(500);
 		}
 	}

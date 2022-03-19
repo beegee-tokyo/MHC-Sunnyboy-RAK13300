@@ -921,6 +921,7 @@ static int at_exec_sma(char * str)
 									inverterIP[2] = newIP[2];
 									inverterIP[3] = newIP[3];
 									saveSmaIP();
+									smaReader.setInverterIP(inverterIP);
 									return 0;
 								}
 							}

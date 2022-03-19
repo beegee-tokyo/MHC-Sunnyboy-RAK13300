@@ -176,3 +176,4 @@ union value_s
 	uint16_t val_16 = 0;
 	uint8_t val_8[2];
 };
+extern SMAReader smaReader;

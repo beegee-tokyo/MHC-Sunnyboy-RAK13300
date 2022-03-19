@@ -42,6 +42,7 @@ The Serial port is setup for 115200 baud, 8N1. It cannot be changed by AT comman
 * [AT+RSSI](#atrssi)
 * [AT+SNR](#atsnr)
 * [AT+VER](#atver)
+* [AT+SMA](#atsma)
 * [Appendix](#appendix-1)
 	* [Appendix I Data Rate by Region](#appendix-i-data-rate-by-region)
 	* [Appendix II TX Power by Region](#appendix-ii-tx-power-by-region)
@@ -133,6 +134,8 @@ AT+BAT      Get battery level
 AT+RSSI     Last RX packet RSSI
 AT+SNR      Last RX packet SNR
 AT+VER      Get SW version
+AT+SMA      Get and Set SMA inverter IP address
+
 +++++++++++++++
 
 OK
@@ -942,6 +945,41 @@ OK
 AT+VER=?
 
 +VER:1.0.0.0 May 27 2021 17:11:12
+OK
+```
+
+[Back](#content)    
+
+----
+
+## AT+SMA
+
+Description: Set/Get the inverter IP address
+
+This command allows the user to check the IP address of the Sunny Inverter and to change the IP address.
+
+| Command                         | Input Parameter      | Return Value                                  | Return Code |
+| --------------------------      | ---------------      | -----------------------------------------     | ----------- |
+| AT+SMA?                         | -                    | `AT+SMA: Get and Set SMA inverter IP address` | `OK`        |
+| AT+SMA=?                        | -                    | *www:xxx:yyy:zzz*                             | `OK`        |
+| AT+SMA=`<Input Parameter>`      | `<Valid IP address>` |                                               | `OK` or `AT_PARAM_ERROR` |
+
+**Examples**:
+
+```
+AT+SMA?
+
++SMA:"Get and Set SMA inverter IP address"
+OK
+
+AT+SMA=?
+
++SMA:192:168:1:127
+OK
+
+AT+SMA=192:168:1:127
+192:168:1:127
+
 OK
 ```
 

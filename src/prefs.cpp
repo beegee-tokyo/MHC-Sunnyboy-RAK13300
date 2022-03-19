@@ -379,7 +379,6 @@ void get_wifi_prefs(void)
 		}
 
 		IPAddress newIP(0, 0, 0, 0);
-		uint8_t partIP = 0;
 
 		newIP[0] = preferences.getShort("sma_0", 0);
 		newIP[1] = preferences.getShort("sma_1", 0);
@@ -393,6 +392,7 @@ void get_wifi_prefs(void)
 		else
 		{
 			inverterIP = newIP;
+			smaReader.setInverterIP(newIP);
 		}
 	}
 	else
