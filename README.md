@@ -1,5 +1,7 @@
 # WisBlock RAK11200 - RAK13300 SMA Sunnyboy to IoT    
 
+### _This example is archived. While switching to a different visualization platform, I realized that I had to make some changes to this application on both firmware and hardware. There is a newer version available in the [RAK11200-SMA-Sunnyboy](https://github.com/beegee-tokyo/RAK11200-SMA-Sunnyboy) repo_ 
+
 | <center><img src="./assets/rakstar.jpg" alt="RAKstar" width=50%></center>  | <center><img src="./assets/RAK-Whirls.png" alt="RAKWireless" width=50%></center> | <center><img src="./assets/WisBlock.png" alt="WisBlock" width=50%></center> | <center><img src="./assets/Yin_yang-48x48.png" alt="BeeGee" width=50%></center>  |
 | -- | -- | -- | -- |
 
